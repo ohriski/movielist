@@ -37,7 +37,7 @@ const Row = ({ title, movies, loading }) => (
     ) : movies.length === 0 ? (
       <div className="text-slate-500 text-sm">Nothing here yet.</div>
     ) : (
-      <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+      <div className="flex gap-3 overflow-x-auto pb-2 custom-scroll">
         {movies.map((m) => (
           <MovieCard key={m.id} movie={m} />
         ))}
