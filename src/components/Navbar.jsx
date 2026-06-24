@@ -85,7 +85,10 @@ const Navbar = () => {
               className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center bg-slate-700 hover:ring-2 hover:ring-blue-400 transition-all flex-shrink-0"
             >
               {customLabel ? (
-                <span className="text-white font-bold text-xs text-center leading-tight px-1 break-all">
+                <span
+                  className="text-white font-bold leading-none text-center w-full flex items-center justify-center"
+                  style={{ fontSize: "clamp(6px, 1.8vw, 11px)" }}
+                >
                   {customLabel}
                 </span>
               ) : avatarUrl ? (
