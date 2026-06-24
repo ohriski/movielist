@@ -122,7 +122,7 @@ const Navbar = () => {
                     <span className="text-slate-100 font-semibold text-sm truncate">
                       {fullName}
                     </span>
-                    <span className="text-slate-400 text-xs truncate">
+                    <span className="text-slate-400 text-xs truncate transition-all duration-300 blur-sm hover:blur-none cursor-pointer">
                       {email}
                     </span>
                   </div>
