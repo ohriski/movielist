@@ -118,7 +118,12 @@ const Navbar = () => {
                     <span className="text-slate-100 font-semibold text-sm truncate">
                       {fullName}
                     </span>
-                    <span className="text-slate-400 text-xs truncate transition-all duration-300 blur-sm hover:blur-none cursor-pointer">
+                    <span
+                      onClick={() => setEmailVisible((v) => !v)}
+                      className={`text-slate-400 text-xs truncate transition-all duration-300 cursor-pointer select-none ${
+                        emailVisible ? "blur-none" : "blur-sm"
+                      }`}
+                    >
                       {email}
                     </span>
                   </div>

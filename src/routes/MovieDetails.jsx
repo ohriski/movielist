@@ -98,12 +98,12 @@ export default function MovieDetail() {
       )}
 
       <div className="max-w-5xl mx-auto px-6 py-8 flex flex-col gap-8 mt-10">
-        <div className="flex gap-8 items-start">
+        <div className="flex flex-col md:flex-row gap-8 items-start">
           {media.poster_path && (
             <img
               src={`${IMG_BASE}${media.poster_path}`}
               alt={media.title}
-              className="w-48 rounded-xl shadow-lg flex-shrink-0 -mt-6"
+              className="w-full md:w-48 rounded-xl shadow-lg flex-shrink-0 md:-mt-6"
             />
           )}
           <div className="flex flex-col gap-3 pt-2">
