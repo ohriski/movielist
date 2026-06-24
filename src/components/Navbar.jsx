@@ -137,7 +137,7 @@ const Navbar = () => {
                       onKeyDown={handleLabelSave}
                       onBlur={handleLabelSave}
                       maxLength={6}
-                      placeholder="e.g. 🎬 or nickname"
+                      placeholder="e.g. 😎 or nickname"
                       className="w-full bg-slate-700 text-white text-sm rounded-lg px-3 py-1.5 outline-none border border-slate-500"
                     />
                   ) : (
