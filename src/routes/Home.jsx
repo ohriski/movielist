@@ -72,7 +72,7 @@ const Home = () => {
       {recentlyViewed.length > 0 && (
         <Row title="Recently Viewed" movies={recentlyViewed} loading={false} />
       )}
-      <Row title="Trending This Week" movies={trending} loading={loading} />
+      <Row title="Trending" movies={trending} loading={loading} />
     </div>
   );
 };

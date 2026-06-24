@@ -15,11 +15,19 @@ export default function Yourlist() {
   const { list, STATUSES, setStatus, removeMovie } = useList();
   const [openMenu, setOpenMenu] = useState(null);
   const [collapsed, setCollapsed] = useState({});
+  const [search, setSearch] = useState("");
   const movies = Object.values(list);
 
   const toggleCollapse = (status) => {
     setCollapsed((prev) => ({ ...prev, [status]: !prev[status] }));
   };
+
+  const filteredMovies = (status) =>
+    movies.filter(
+      (m) =>
+        m.status === status &&
+        m.title?.toLowerCase().includes(search.toLowerCase()),
+    );
 
   if (!movies.length) {
     return (
@@ -34,9 +42,19 @@ export default function Yourlist() {
   return (
     <div className="min-h-screen bg-slate-900 px-4 py-10">
       <div className="w-full max-w-screen-2xl mx-auto flex flex-col gap-10">
-        <h1 className="text-4xl font-bold text-slate-100">Your List</h1>
+        <div className="flex items-center gap-4">
+          <h1 className="text-4xl font-bold text-slate-100">Your List</h1>
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search your list..."
+            className="ml-4 bg-transparent border border-slate-700 focus:border-slate-500 rounded-full px-4 py-1.5 text-sm text-slate-300 placeholder-slate-600 outline-none transition-colors"
+          />
+        </div>
+
         {STATUSES.map((status) => {
-          const filtered = movies.filter((m) => m.status === status);
+          const filtered = filteredMovies(status);
           if (!filtered.length) return null;
           const isCollapsed = collapsed[status];
           return (
@@ -67,7 +85,7 @@ export default function Yourlist() {
                       className="relative group rounded-lg overflow-visible"
                       onMouseLeave={() => setOpenMenu(null)}
                     >
-                      <Link to={`/movie/${movie.id}`}>
+                      <Link to={`/${movie.media_type ?? "movie"}/${movie.id}`}>
                         <div className="rounded-lg overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-200">
                           {movie.poster_path ? (
                             <img
@@ -82,6 +100,13 @@ export default function Yourlist() {
                           )}
                         </div>
                       </Link>
+
+                      {/* TV badge */}
+                      {movie.media_type === "tv" && (
+                        <span className="absolute top-2 left-2 bg-black/60 text-white text-xs px-2 py-0.5 rounded-full pointer-events-none">
+                          TV
+                        </span>
+                      )}
 
                       <button
                         onClick={(e) => {

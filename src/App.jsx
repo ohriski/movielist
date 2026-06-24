@@ -9,6 +9,7 @@ import { ListProvider } from "./context/ListContext";
 import { AuthProvider } from "./context/AuthContext";
 import { useAuth } from "./context/AuthContext";
 import Login from "./routes/Login";
+import { ScrollRestoration } from "react-router-dom";
 
 function AppInner() {
   const { user, loading } = useAuth();
@@ -19,6 +20,7 @@ function AppInner() {
     <ListProvider>
       <div className="min-h-screen flex flex-col bg-slate-900">
         <Navbar />
+        <ScrollRestoration />
         <div className="flex-1 pt-16">
           <Routes>
             <Route path="/" element={<Home />} />
