@@ -55,6 +55,29 @@ const Navbar = () => {
     setEditing(true);
   };
 
+  const AvatarCircle = ({ size = "w-10 h-10" }) => (
+    <div
+      className={`${size} rounded-full overflow-hidden flex items-center justify-center bg-slate-700 flex-shrink-0`}
+    >
+      {customLabel ? (
+        <span
+          className="text-white font-bold leading-none text-center w-full flex items-center justify-center"
+          style={{ fontSize: "clamp(6px, 1.8vw, 11px)" }}
+        >
+          {customLabel}
+        </span>
+      ) : avatarUrl ? (
+        <img
+          src={avatarUrl}
+          alt="avatar"
+          className="w-full h-full object-cover"
+        />
+      ) : (
+        <span className="text-white font-bold text-sm">{initials}</span>
+      )}
+    </div>
+  );
+
   return (
     <nav className="fixed top-0 left-0 w-full bg-slate-900 backdrop-blur-sm border-b border-slate-900 shadow-lg z-50">
       <div className="mx-auto flex items-center justify-between px-8 py-3">
@@ -82,42 +105,15 @@ const Navbar = () => {
           <div className="relative" ref={menuRef}>
             <button
               onClick={handleAvatarClick}
-              className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center bg-slate-700 hover:ring-2 hover:ring-blue-400 transition-all flex-shrink-0"
+              className="hover:ring-2 hover:ring-blue-400 rounded-full transition-all"
             >
-              {customLabel ? (
-                <span
-                  className="text-white font-bold leading-none text-center w-full flex items-center justify-center"
-                  style={{ fontSize: "clamp(6px, 1.8vw, 11px)" }}
-                >
-                  {customLabel}
-                </span>
-              ) : avatarUrl ? (
-                <img
-                  src={avatarUrl}
-                  alt="avatar"
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <span className="text-white font-bold text-sm">{initials}</span>
-              )}
+              <AvatarCircle />
             </button>
 
             {menuOpen && (
               <div className="absolute right-0 top-12 bg-slate-800 border border-slate-700 rounded-xl shadow-xl z-50 w-64 overflow-hidden">
                 <div className="px-4 py-4 flex items-center gap-3 border-b border-slate-700">
-                  <div className="w-10 h-10 rounded-full overflow-hidden flex items-center justify-center bg-slate-700 flex-shrink-0">
-                    {avatarUrl ? (
-                      <img
-                        src={avatarUrl}
-                        alt="avatar"
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <span className="text-white font-bold text-sm">
-                        {initials}
-                      </span>
-                    )}
-                  </div>
+                  <AvatarCircle />
                   <div className="flex flex-col min-w-0">
                     <span className="text-slate-100 font-semibold text-sm truncate">
                       {fullName}
