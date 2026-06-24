@@ -11,7 +11,7 @@ const Navbar = () => {
   );
   const menuRef = useRef(null);
   const inputRef = useRef(null);
-
+  const [emailVisible, setEmailVisible] = useState(false);
   const avatarUrl = user?.user_metadata?.avatar_url;
   const fullName = user?.user_metadata?.full_name ?? "";
   const email = user?.email ?? "";
