@@ -53,7 +53,7 @@ const Home = () => {
 
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem("recently_viewed") ?? "[]");
-    setRecentlyViewed(stored.slice(0, 6));
+    setRecentlyViewed(stored.slice(0, 10));
 
     fetch(
       `https://api.themoviedb.org/3/trending/all/week?api_key=${apiKey}&language=en-US`,
