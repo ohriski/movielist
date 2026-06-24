@@ -139,7 +139,7 @@ const Navbar = () => {
                       onChange={(e) => setCustomLabel(e.target.value)}
                       onKeyDown={handleLabelSave}
                       onBlur={handleLabelSave}
-                      maxLength={10}
+                      maxLength={6}
                       placeholder="+-5 symbols"
                       className="w-full bg-slate-700 text-white text-sm rounded-lg px-3 py-1.5 outline-none border border-slate-500"
                     />
