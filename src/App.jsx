@@ -27,6 +27,7 @@ function AppInner() {
             <Route path="/yourlist" element={<Yourlist />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/movie/:id" element={<MovieDetails />} />
+            <Route path="/:type/:id" element={<MovieDetails />} />
           </Routes>
         </div>
         <Footer />

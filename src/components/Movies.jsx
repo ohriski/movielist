@@ -5,13 +5,31 @@ import { useList } from "../context/ListContext";
 const apiKey = import.meta.env.VITE_TMDB_API_KEY;
 
 export async function searchMovies(query) {
-  const url = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${encodeURIComponent(
-    query,
-  )}&include_adult=false&language=en-US&page=1`;
+  const [movieRes, tvRes] = await Promise.all([
+    fetch(
+      `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${encodeURIComponent(query)}&include_adult=false&language=en-US&page=1`,
+    ),
+    fetch(
+      `https://api.themoviedb.org/3/search/tv?api_key=${apiKey}&query=${encodeURIComponent(query)}&include_adult=false&language=en-US&page=1`,
+    ),
+  ]);
+  const [movieData, tvData] = await Promise.all([
+    movieRes.json(),
+    tvRes.json(),
+  ]);
 
-  const res = await fetch(url);
-  const json = await res.json();
-  return json.results;
+  const movies = (movieData.results ?? []).map((m) => ({
+    ...m,
+    media_type: "movie",
+  }));
+  const shows = (tvData.results ?? []).map((s) => ({
+    ...s,
+    media_type: "tv",
+    title: s.name,
+    release_date: s.first_air_date,
+  }));
+
+  return [...movies, ...shows].sort((a, b) => b.popularity - a.popularity);
 }
 
 const POSTER_BASE = "https://image.tmdb.org/t/p/w500";
@@ -50,7 +68,7 @@ function MovieCard({ movie }) {
   };
 
   return (
-    <Link to={`/movie/${movie.id}`}>
+    <Link to={`/${movie.media_type}/${movie.id}`}>
       <div className="relative group flex flex-col bg-slate-800 rounded-xl shadow-md overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-200">
         {hasPoster ? (
           <img
@@ -64,15 +82,18 @@ function MovieCard({ movie }) {
           </div>
         )}
 
+        {/* TV badge */}
+        {movie.media_type === "tv" && (
+          <span className="absolute top-2 left-2 bg-black/60 text-white text-xs px-2 py-0.5 rounded-full">
+            TV
+          </span>
+        )}
+
         <div className="absolute top-2 right-2 z-10">
           <button
             onClick={handlePlusClick}
             className={`w-7 h-7 rounded-full flex items-center justify-center text-white text-sm font-bold shadow-lg transition-opacity
-              ${
-                currentStatus
-                  ? statusColors[currentStatus]
-                  : "bg-slate-800/80 opacity-0 group-hover:opacity-100"
-              }`}
+              ${currentStatus ? statusColors[currentStatus] : "bg-slate-800/80 opacity-0 group-hover:opacity-100"}`}
           >
             {currentStatus ? "✓" : "+"}
           </button>
@@ -124,7 +145,7 @@ export default function Movies({ movies }) {
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 w-full">
       {movies.map((movie) => (
-        <MovieCard key={movie.id} movie={movie} />
+        <MovieCard key={`${movie.media_type}-${movie.id}`} movie={movie} />
       ))}
     </div>
   );

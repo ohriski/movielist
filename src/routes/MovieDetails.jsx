@@ -14,37 +14,47 @@ const statusColors = {
 };
 
 export default function MovieDetail() {
-  const { id } = useParams();
-  const [movie, setMovie] = useState(null);
+  const { type, id } = useParams();
+  const [media, setMedia] = useState(null);
   const [cast, setCast] = useState([]);
   const [trailer, setTrailer] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showMenu, setShowMenu] = useState(false);
 
   const { list, STATUSES, setStatus, removeMovie } = useList();
-  const currentStatus = movie ? list[movie.id]?.status : null;
+  const currentStatus = media ? list[media.id]?.status : null;
 
   useEffect(() => {
     const fetchAll = async () => {
       try {
-        const [movieRes, creditsRes, videosRes] = await Promise.all([
+        const [mediaRes, creditsRes, videosRes] = await Promise.all([
           fetch(
-            `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}&language=en-US`,
+            `https://api.themoviedb.org/3/${type}/${id}?api_key=${apiKey}&language=en-US`,
           ),
           fetch(
-            `https://api.themoviedb.org/3/movie/${id}/credits?api_key=${apiKey}&language=en-US`,
+            `https://api.themoviedb.org/3/${type}/${id}/credits?api_key=${apiKey}&language=en-US`,
           ),
           fetch(
-            `https://api.themoviedb.org/3/movie/${id}/videos?api_key=${apiKey}&language=en-US`,
+            `https://api.themoviedb.org/3/${type}/${id}/videos?api_key=${apiKey}&language=en-US`,
           ),
         ]);
-        const [movieData, creditsData, videosData] = await Promise.all([
-          movieRes.json(),
+        const [mediaData, creditsData, videosData] = await Promise.all([
+          mediaRes.json(),
           creditsRes.json(),
           videosRes.json(),
         ]);
 
-        setMovie(movieData);
+        // Normalize TV show fields to match movie fields
+        if (type === "tv") {
+          mediaData.title = mediaData.name;
+          mediaData.release_date = mediaData.first_air_date;
+          mediaData.runtime = mediaData.episode_run_time?.[0];
+          mediaData.media_type = "tv";
+        } else {
+          mediaData.media_type = "movie";
+        }
+
+        setMedia(mediaData);
         setCast(creditsData.cast?.slice(0, 10) ?? []);
         setTrailer(
           videosData.results?.find(
@@ -58,47 +68,60 @@ export default function MovieDetail() {
       }
     };
     fetchAll();
-  }, [id]);
+  }, [type, id]);
 
   if (loading)
     return <div className="p-10 text-center text-slate-400">Loading...</div>;
-  if (!movie)
-    return (
-      <div className="p-10 text-center text-slate-400">Movie not found.</div>
-    );
+  if (!media)
+    return <div className="p-10 text-center text-slate-400">Not found.</div>;
 
   return (
     <div
       className="min-h-screen bg-slate-900"
       onClick={() => setShowMenu(false)}
     >
-      {movie.backdrop_path && (
+      {media.backdrop_path && (
         <div
           className="w-full h-72 bg-cover bg-center"
           style={{
-            backgroundImage: `url(${BACKDROP_BASE}${movie.backdrop_path})`,
+            backgroundImage: `url(${BACKDROP_BASE}${media.backdrop_path})`,
           }}
         />
       )}
 
       <div className="max-w-5xl mx-auto px-6 py-8 flex flex-col gap-8 mt-10">
         <div className="flex gap-8 items-start">
-          {movie.poster_path && (
+          {media.poster_path && (
             <img
-              src={`${IMG_BASE}${movie.poster_path}`}
-              alt={movie.title}
+              src={`${IMG_BASE}${media.poster_path}`}
+              alt={media.title}
               className="w-48 rounded-xl shadow-lg flex-shrink-0 -mt-6"
             />
           )}
           <div className="flex flex-col gap-3 pt-2">
-            <h1 className="text-4xl font-bold text-slate-100">{movie.title}</h1>
+            <div className="flex items-center gap-3">
+              <h1 className="text-4xl font-bold text-slate-100">
+                {media.title}
+              </h1>
+              {type === "tv" && (
+                <span className="text-xs bg-slate-700 text-slate-300 px-2 py-1 rounded-full">
+                  TV Show
+                </span>
+              )}
+            </div>
             <div className="flex gap-3 text-sm text-slate-400">
-              <span>{movie.release_date?.slice(0, 4)}</span>
-              {movie.runtime && <span>· {movie.runtime} min</span>}
-              <span>· ⭐ {movie.vote_average?.toFixed(1)}</span>
+              <span>{media.release_date?.slice(0, 4)}</span>
+              {media.runtime && <span>· {media.runtime} min</span>}
+              {type === "tv" && media.number_of_seasons && (
+                <span>
+                  · {media.number_of_seasons} season
+                  {media.number_of_seasons > 1 ? "s" : ""}
+                </span>
+              )}
+              <span>· ⭐ {media.vote_average?.toFixed(1)}</span>
             </div>
             <div className="flex gap-2 flex-wrap">
-              {movie.genres?.map((g) => (
+              {media.genres?.map((g) => (
                 <span
                   key={g.id}
                   className="text-xs bg-slate-700 text-slate-300 px-2 py-1 rounded-full"
@@ -107,9 +130,8 @@ export default function MovieDetail() {
                 </span>
               ))}
             </div>
-            <p className="text-slate-300 leading-relaxed">{movie.overview}</p>
+            <p className="text-slate-300 leading-relaxed">{media.overview}</p>
 
-            {/* Status button */}
             <div className="relative" onClick={(e) => e.stopPropagation()}>
               <button
                 onClick={() => setShowMenu(!showMenu)}
@@ -128,7 +150,7 @@ export default function MovieDetail() {
                     <button
                       key={s}
                       onClick={() => {
-                        setStatus(movie, s);
+                        setStatus(media, s);
                         setShowMenu(false);
                       }}
                       className={`w-full text-left px-4 py-2 text-sm flex items-center gap-2 hover:bg-slate-700 transition-colors ${
@@ -147,7 +169,7 @@ export default function MovieDetail() {
                     <div className="border-t border-slate-700">
                       <button
                         onClick={() => {
-                          removeMovie(movie.id);
+                          removeMovie(media.id);
                           setShowMenu(false);
                         }}
                         className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-slate-700 transition-colors"
