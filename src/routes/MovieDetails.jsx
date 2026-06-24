@@ -44,7 +44,6 @@ export default function MovieDetail() {
           videosRes.json(),
         ]);
 
-        // Normalize TV show fields to match movie fields
         if (type === "tv") {
           mediaData.title = mediaData.name;
           mediaData.release_date = mediaData.first_air_date;
@@ -69,6 +68,23 @@ export default function MovieDetail() {
     };
     fetchAll();
   }, [type, id]);
+
+  // Save to recently viewed
+  useEffect(() => {
+    if (!media) return;
+    const stored = JSON.parse(localStorage.getItem("recently_viewed") ?? "[]");
+    const filtered = stored.filter((m) => m.id !== media.id);
+    const updated = [
+      {
+        id: media.id,
+        title: media.title,
+        poster_path: media.poster_path,
+        media_type: media.media_type,
+      },
+      ...filtered,
+    ].slice(0, 20);
+    localStorage.setItem("recently_viewed", JSON.stringify(updated));
+  }, [media]);
 
   if (loading)
     return <div className="p-10 text-center text-slate-400">Loading...</div>;
