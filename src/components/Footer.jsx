@@ -5,9 +5,7 @@ const Footer = () => {
         <p>© MovieLists - created for my convenience</p>
 
         <div className="flex gap-6">
-          <a href="#" className="hover:text-blue-400 transition-colors">
-            xdd
-          </a>
+          <a className="hover:text-blue-400 transition-colors">xdd</a>
         </div>
       </div>
     </footer>

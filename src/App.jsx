@@ -3,7 +3,6 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./routes/Home";
 import Search from "./routes/Search";
 import Yourlist from "./routes/Yourlist";
-import Profile from "./routes/Profile";
 import MovieDetails from "./routes/MovieDetails";
 import Footer from "./components/Footer";
 import { ListProvider } from "./context/ListContext";
@@ -25,8 +24,6 @@ function AppInner() {
             <Route path="/" element={<Home />} />
             <Route path="/search" element={<Search />} />
             <Route path="/yourlist" element={<Yourlist />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/movie/:id" element={<MovieDetails />} />
             <Route path="/:type/:id" element={<MovieDetails />} />
           </Routes>
         </div>
