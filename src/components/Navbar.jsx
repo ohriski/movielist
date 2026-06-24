@@ -136,7 +136,10 @@ const Navbar = () => {
                     <input
                       ref={inputRef}
                       value={customLabel}
-                      onChange={(e) => setCustomLabel(e.target.value)}
+                      onChange={(e) => {
+                        setCustomLabel(e.target.value);
+                        localStorage.setItem("avatar_label", e.target.value);
+                      }}
                       onKeyDown={handleLabelSave}
                       onBlur={handleLabelSave}
                       maxLength={6}
