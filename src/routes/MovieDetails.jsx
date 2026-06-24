@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useList } from "../context/ListContext";
 
-const apiKey = import.meta.env.VITE_TMDB_API_KEY;
 const IMG_BASE = "https://image.tmdb.org/t/p/w500";
 const BACKDROP_BASE = "https://image.tmdb.org/t/p/original";
 
@@ -28,15 +27,9 @@ export default function MovieDetail() {
     const fetchAll = async () => {
       try {
         const [mediaRes, creditsRes, videosRes] = await Promise.all([
-          fetch(
-            `https://api.themoviedb.org/3/${type}/${id}?api_key=${apiKey}&language=en-US`,
-          ),
-          fetch(
-            `https://api.themoviedb.org/3/${type}/${id}/credits?api_key=${apiKey}&language=en-US`,
-          ),
-          fetch(
-            `https://api.themoviedb.org/3/${type}/${id}/videos?api_key=${apiKey}&language=en-US`,
-          ),
+          fetch(`/api/tmdb?endpoint=${type}/${id}&language=en-US`),
+          fetch(`/api/tmdb?endpoint=${type}/${id}/credits&language=en-US`),
+          fetch(`/api/tmdb?endpoint=${type}/${id}/videos&language=en-US`),
         ]);
         const [mediaData, creditsData, videosData] = await Promise.all([
           mediaRes.json(),
@@ -69,7 +62,6 @@ export default function MovieDetail() {
     fetchAll();
   }, [type, id]);
 
-  // Save to recently viewed
   useEffect(() => {
     if (!media) return;
     const stored = JSON.parse(localStorage.getItem("recently_viewed") ?? "[]");

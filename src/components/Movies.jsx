@@ -7,10 +7,10 @@ const apiKey = import.meta.env.VITE_TMDB_API_KEY;
 export async function searchMovies(query) {
   const [movieRes, tvRes] = await Promise.all([
     fetch(
-      `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${encodeURIComponent(query)}&include_adult=false&language=en-US&page=1`,
+      `/api/tmdb?endpoint=search/movie&query=${encodeURIComponent(query)}&include_adult=false&language=en-US&page=1`,
     ),
     fetch(
-      `https://api.themoviedb.org/3/search/tv?api_key=${apiKey}&query=${encodeURIComponent(query)}&include_adult=false&language=en-US&page=1`,
+      `/api/tmdb?endpoint=search/tv&query=${encodeURIComponent(query)}&include_adult=false&language=en-US&page=1`,
     ),
   ]);
   const [movieData, tvData] = await Promise.all([
@@ -82,7 +82,6 @@ function MovieCard({ movie }) {
           </div>
         )}
 
-        {/* TV badge */}
         {movie.media_type === "tv" && (
           <span className="absolute top-2 left-2 bg-black/60 text-white text-xs px-2 py-0.5 rounded-full">
             TV

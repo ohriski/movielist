@@ -55,12 +55,7 @@ const Home = () => {
     const stored = JSON.parse(localStorage.getItem("recently_viewed") ?? "[]");
     setRecentlyViewed(stored.slice(0, 10));
 
-    fetch(
-      `https://api.themoviedb.org/3/trending/all/week?api_key=${apiKey}&language=en-US`,
-      {
-        headers: { accept: "application/json" },
-      },
-    )
+    fetch(`/api/tmdb?endpoint=trending/all/week&language=en-US`)
       .then((res) => res.json())
       .then((data) => setTrending(data.results ?? []))
       .catch(console.error)
