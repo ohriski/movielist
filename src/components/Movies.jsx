@@ -74,18 +74,20 @@ function MovieCard({ movie }) {
 
   return (
     <Link to={`/${movie.media_type}/${movie.id}`}>
-      <div className="relative group flex flex-col bg-slate-800 rounded-xl shadow-md overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-200">
-        {hasPoster ? (
-          <img
-            src={`${POSTER_BASE}${movie.poster_path}`}
-            alt={movie.title}
-            className="w-full aspect-[2/3] object-cover"
-          />
-        ) : (
-          <div className="w-full aspect-[2/3] bg-slate-700 flex items-center justify-center text-slate-400 text-sm px-4 text-center">
-            No poster available
-          </div>
-        )}
+      <div className="relative group flex flex-col bg-slate-800 rounded-xl shadow-md overflow-visible hover:shadow-xl hover:-translate-y-1 transition-all duration-200">
+        <div className="rounded-xl overflow-hidden">
+          {hasPoster ? (
+            <img
+              src={`${POSTER_BASE}${movie.poster_path}`}
+              alt={movie.title}
+              className="w-full aspect-[2/3] object-cover"
+            />
+          ) : (
+            <div className="w-full aspect-[2/3] bg-slate-700 flex items-center justify-center text-slate-400 text-sm px-4 text-center">
+              No poster available
+            </div>
+          )}
+        </div>
 
         {movie.media_type === "tv" && (
           <span className="absolute top-2 left-2 bg-black/60 text-white text-xs px-2 py-0.5 rounded-full">
