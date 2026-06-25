@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useList } from "../context/ListContext";
 
@@ -16,38 +16,7 @@ export default function Yourlist() {
   const [openMenu, setOpenMenu] = useState(null);
   const [collapsed, setCollapsed] = useState({});
   const [search, setSearch] = useState("");
-  const [tmdbIds, setTmdbIds] = useState(null);
   const movies = Object.values(list);
-
-  useEffect(() => {
-    if (!search.trim()) {
-      setTmdbIds(null);
-      return;
-    }
-
-    const timeout = setTimeout(async () => {
-      const [movieRes, tvRes] = await Promise.all([
-        fetch(
-          `/api/tmdb?endpoint=search/movie&query=${encodeURIComponent(search)}&page=1`,
-        ),
-        fetch(
-          `/api/tmdb?endpoint=search/tv&query=${encodeURIComponent(search)}&page=1`,
-        ),
-      ]);
-      const [movieData, tvData] = await Promise.all([
-        movieRes.json(),
-        tvRes.json(),
-      ]);
-
-      const ids = new Set([
-        ...(movieData.results ?? []).map((m) => m.id),
-        ...(tvData.results ?? []).map((s) => s.id),
-      ]);
-      setTmdbIds(ids);
-    }, 300);
-
-    return () => clearTimeout(timeout);
-  }, [search]);
 
   const toggleCollapse = (status) => {
     setCollapsed((prev) => ({ ...prev, [status]: !prev[status] }));
@@ -59,8 +28,7 @@ export default function Yourlist() {
         m.status === status &&
         (m.title?.toLowerCase().includes(search.toLowerCase()) ||
           m.original_title?.toLowerCase().includes(search.toLowerCase()) ||
-          m.original_name?.toLowerCase().includes(search.toLowerCase()) ||
-          tmdbIds?.has(m.id)),
+          m.original_name?.toLowerCase().includes(search.toLowerCase())),
     );
 
   if (!movies.length) {
