@@ -26,7 +26,8 @@ export default function Yourlist() {
     movies.filter(
       (m) =>
         m.status === status &&
-        m.title?.toLowerCase().includes(search.toLowerCase()),
+        (m.title?.toLowerCase().includes(search.toLowerCase()) ||
+          m.original_title?.toLowerCase().includes(search.toLowerCase())),
     );
 
   if (!movies.length) {
