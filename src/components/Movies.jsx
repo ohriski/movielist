@@ -1,8 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useList } from "../context/ListContext";
-
-const apiKey = import.meta.env.VITE_TMDB_API_KEY;
 
 export async function searchMovies(query) {
   const [movieRes, tvRes] = await Promise.all([
@@ -47,6 +45,13 @@ function MovieCard({ movie }) {
   const hasPoster = Boolean(movie.poster_path);
   const currentStatus = list[movie.id]?.status;
 
+  useEffect(() => {
+    if (!showPicker) return;
+    const handler = () => setShowPicker(false);
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [showPicker]);
+
   const handlePlusClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -88,7 +93,7 @@ function MovieCard({ movie }) {
           </span>
         )}
 
-        <div className="absolute top-2 right-2 z-10">
+        <div className="absolute top-1/2 right-2 -translate-y-1/2 z-10">
           <button
             onClick={handlePlusClick}
             className={`w-7 h-7 rounded-full flex items-center justify-center text-white text-sm font-bold shadow-lg transition-opacity
@@ -98,39 +103,29 @@ function MovieCard({ movie }) {
           </button>
 
           {showPicker && (
-            <>
-              <div
-                className="fixed inset-0 z-10"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setShowPicker(false);
-                }}
-              />
-              <div className="absolute top-9 right-0 bg-slate-800 border border-slate-700 rounded-lg shadow-xl py-1 z-20 min-w-[140px]">
-                {STATUSES.map((s) => (
-                  <button
-                    key={s}
-                    onClick={(e) => handleStatusClick(e, s)}
-                    className={`w-full text-left px-3 py-2 text-sm hover:bg-slate-700 ${
-                      currentStatus === s
-                        ? "font-semibold text-blue-400"
-                        : "text-slate-300"
-                    }`}
-                  >
-                    {s}
-                  </button>
-                ))}
-                {currentStatus && (
-                  <button
-                    onClick={handleRemove}
-                    className="w-full text-left px-3 py-2 text-sm text-red-400 hover:bg-slate-700 border-t border-slate-700"
-                  >
-                    Remove
-                  </button>
-                )}
-              </div>
-            </>
+            <div className="absolute top-9 right-0 bg-slate-800 border border-slate-700 rounded-lg shadow-xl py-1 z-20 min-w-[140px]">
+              {STATUSES.map((s) => (
+                <button
+                  key={s}
+                  onClick={(e) => handleStatusClick(e, s)}
+                  className={`w-full text-left px-3 py-2 text-sm hover:bg-slate-700 ${
+                    currentStatus === s
+                      ? "font-semibold text-blue-400"
+                      : "text-slate-300"
+                  }`}
+                >
+                  {s}
+                </button>
+              ))}
+              {currentStatus && (
+                <button
+                  onClick={handleRemove}
+                  className="w-full text-left px-3 py-2 text-sm text-red-400 hover:bg-slate-700 border-t border-slate-700"
+                >
+                  Remove
+                </button>
+              )}
+            </div>
           )}
         </div>
       </div>

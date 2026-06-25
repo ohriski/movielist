@@ -152,7 +152,7 @@ export default function Yourlist() {
                       </button>
 
                       {openMenu === movie.id && (
-                        <div className="absolute top-8 right-1 bg-slate-800 border border-slate-700 rounded-xl shadow-xl z-20 overflow-hidden min-w-[150px]">
+                        <div className="absolute top-8 left-1/2 -translate-x-1/2 bg-slate-800 border border-slate-700 rounded-xl shadow-xl z-20 overflow-hidden min-w-[150px]">
                           {STATUSES.map((s) => (
                             <button
                               key={s}
