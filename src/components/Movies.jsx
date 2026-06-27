@@ -92,7 +92,7 @@ function MovieCard({ movie }) {
           <button
             onClick={handlePlusClick}
             className={`w-7 h-7 rounded-full flex items-center justify-center leading-none mt-px text-white text-sm font-bold shadow-lg transition-opacity
-              ${currentStatus ? statusColors[currentStatus] : "bg-slate-800/80 opacity-0 group-hover:opacity-100"}`}
+    ${currentStatus ? statusColors[currentStatus] : "bg-slate-800/80 opacity-100 md:opacity-0 md:group-hover:opacity-100"}`}
           >
             {currentStatus ? "✓" : "+"}
           </button>
