@@ -164,7 +164,7 @@ export default function MovieDetail() {
                         setStatus(media, s);
                         setShowMenu(false);
                       }}
-                      className={`w-full text-left px-4 py-2 text-sm hover:bg-slate-700 transition-colors ${
+                      className={`block w-full text-left px-4 py-2 text-sm hover:bg-slate-700 transition-colors ${
                         currentStatus === s
                           ? "text-white font-semibold"
                           : "text-slate-300"
@@ -180,7 +180,7 @@ export default function MovieDetail() {
                           removeMovie(media.id);
                           setShowMenu(false);
                         }}
-                        className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-slate-700 transition-colors"
+                        className="block w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-slate-700 transition-colors"
                       >
                         Remove
                       </button>
