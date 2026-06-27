@@ -41,30 +41,30 @@ const statusColors = {
   Dropped: "bg-red-500",
 };
 
-function MovieCard({ movie }) {
+function MovieCard({ movie, openId, setOpenId }) {
   const { list, setStatus, removeMovie, STATUSES } = useList();
-  const [showPicker, setShowPicker] = useState(false);
   const hasPoster = Boolean(movie.poster_path);
   const currentStatus = list[movie.id]?.status;
+  const showPicker = openId === movie.id;
 
   const handlePlusClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    setShowPicker(!showPicker);
+    setOpenId(showPicker ? null : movie.id);
   };
 
   const handleStatusClick = (e, status) => {
     e.preventDefault();
     e.stopPropagation();
     setStatus(movie, status);
-    setShowPicker(false);
+    setOpenId(null);
   };
 
   const handleRemove = (e) => {
     e.preventDefault();
     e.stopPropagation();
     removeMovie(movie.id);
-    setShowPicker(false);
+    setOpenId(null);
   };
 
   return (
@@ -139,12 +139,19 @@ function MovieCard({ movie }) {
 }
 
 export default function Movies({ movies }) {
+  const [openId, setOpenId] = useState(null);
+
   if (!movies.length) return null;
 
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4 w-full">
       {movies.map((movie) => (
-        <MovieCard key={`${movie.media_type}-${movie.id}`} movie={movie} />
+        <MovieCard
+          key={`${movie.media_type}-${movie.id}`}
+          movie={movie}
+          openId={openId}
+          setOpenId={setOpenId}
+        />
       ))}
     </div>
   );
