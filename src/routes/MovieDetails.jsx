@@ -153,7 +153,7 @@ export default function MovieDetail() {
               </button>
 
               {showMenu && (
-                <div className="absolute top-10 left-0 bg-slate-800 border border-slate-700 rounded-xl shadow-xl z-20 overflow-hidden min-w-[160px]">
+                <div className="absolute top-10 left-0 bg-slate-800 border border-slate-700 rounded-xl shadow-xl z-20 overflow-hidden min-w-[140px] w-fit">
                   {STATUSES.map((s) => (
                     <button
                       key={s}

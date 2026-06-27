@@ -104,10 +104,10 @@ function MovieCard({ movie, openId, setOpenId }) {
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  setShowPicker(false);
+                  setOpenId(null);
                 }}
               />
-              <div className="absolute top-9 right-0 bg-slate-800 border border-slate-700 rounded-lg shadow-xl py-1 z-20 min-w-[140px]">
+              <div className="absolute top-9 left-0 bg-slate-800 border border-slate-700 rounded-lg shadow-xl py-1 z-20 min-w-[140px]">
                 {STATUSES.map((s) => (
                   <button
                     key={s}
