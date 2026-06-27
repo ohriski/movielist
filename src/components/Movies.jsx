@@ -99,14 +99,6 @@ function MovieCard({ movie, openId, setOpenId }) {
 
           {showPicker && (
             <>
-              <div
-                className="fixed inset-0 z-10"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setOpenId(null);
-                }}
-              />
               <div className="absolute top-9 right-0 bg-slate-800 border border-slate-700 rounded-lg shadow-xl py-1 z-50 min-w-[140px] w-fit">
                 {STATUSES.map((s) => (
                   <button
@@ -140,6 +132,12 @@ function MovieCard({ movie, openId, setOpenId }) {
 
 export default function Movies({ movies }) {
   const [openId, setOpenId] = useState(null);
+
+  useEffect(() => {
+    const handler = () => setOpenId(null);
+    document.addEventListener("click", handler);
+    return () => document.removeEventListener("click", handler);
+  }, []);
 
   if (!movies.length) return null;
 
