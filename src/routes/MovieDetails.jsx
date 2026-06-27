@@ -140,7 +140,10 @@ export default function MovieDetail() {
             </div>
             <p className="text-slate-300 leading-relaxed">{media.overview}</p>
 
-            <div className="relative" onClick={(e) => e.stopPropagation()}>
+            <div
+              className="relative inline-block"
+              onClick={(e) => e.stopPropagation()}
+            >
               <button
                 onClick={() => setShowMenu(!showMenu)}
                 className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium text-white transition-colors ${
