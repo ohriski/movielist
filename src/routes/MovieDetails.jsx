@@ -161,15 +161,12 @@ export default function MovieDetail() {
                         setStatus(media, s);
                         setShowMenu(false);
                       }}
-                      className={`w-full text-left px-4 py-2 text-sm flex items-center gap-2 hover:bg-slate-700 transition-colors ${
+                      className={`w-full text-left px-4 py-2 text-sm hover:bg-slate-700 transition-colors ${
                         currentStatus === s
                           ? "text-white font-semibold"
                           : "text-slate-300"
                       }`}
                     >
-                      <span
-                        className={`w-2 h-2 rounded-full ${statusColors[s]}`}
-                      />
                       {s}
                     </button>
                   ))}

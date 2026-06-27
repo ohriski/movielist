@@ -146,7 +146,7 @@ export default function Yourlist() {
                           e.preventDefault();
                           setOpenMenu(openMenu === movie.id ? null : movie.id);
                         }}
-                        className="absolute top-1.5 right-1.5 bg-black/60 hover:bg-black/80 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10"
+                        className="absolute top-1.5 right-1.5 bg-black/60 hover:bg-black/80 text-white rounded-full w-7 h-7 flex items-center justify-center text-xs opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-200 z-10"
                       >
                         ⋯
                       </button>
