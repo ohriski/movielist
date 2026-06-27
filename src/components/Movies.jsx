@@ -107,7 +107,7 @@ function MovieCard({ movie, openId, setOpenId }) {
                   setOpenId(null);
                 }}
               />
-              <div className="absolute top-9 left-0 bg-slate-800 border border-slate-700 rounded-lg shadow-xl py-1 z-20 min-w-[140px]">
+              <div className="absolute top-9 right-0 bg-slate-800 border border-slate-700 rounded-lg shadow-xl py-1 z-50 min-w-[140px] w-fit">
                 {STATUSES.map((s) => (
                   <button
                     key={s}
